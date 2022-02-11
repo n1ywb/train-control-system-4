@@ -1,0 +1,48 @@
+# PcbXY Version 1.0
+# Date: Sun 28 Jan 2018 07:52:13 PM GMT UTC
+# Author: jeff
+# Title: (unknown) - PCB X-Y
+# RefDes, Description, Value, X, Y, rotation, top/bottom
+# X,Y in mm.  rotation in degrees.
+# --------------------------------------------
+J8,"0.1_inch_1pin","unknown",9.12,4.97,0,top
+F1,"fuseholder_3568","4A",13.95,50.01,0,top
+J4,"JUMPER4","unknown",36.81,51.98,90,top
+R9,"res-0.125w","1k",53.71,23.67,270,top
+R3,"res-0.125w","1k",63.49,21.45,180,top
+D1,"do-41","30V_500W",29.12,45.48,0,top
+C1,"cap_alum_4700uf_snap","4700uF",34.87,12.84,270,top
+C2,"cap-panasonic-220uf","220uF",27.62,28.98,0,top
+U4,"KBP306GTB-bridge-rect","unknown",15.40,43.77,270,top
+U5,"KBP306GTB-bridge-rect","unknown",15.51,33.08,270,top
+U2,"lmd18200","unknown",10.71,11.17,90,top
+R8,"res-0.125w","1k",66.12,31.73,270,top
+R10,"res-0.125w","1k",53.62,7.47,270,top
+U6,"reflect-int-SFH-9206","unknown",79.03,2.76,0,top
+J9,"JUMPER4","unknown",79.01,26.57,90,top
+C9,"cap_1uf_tdk","1uF",8.25,25.42,90,top
+C8,"cap_1uf_tdk","1uF",12.15,37.03,0,top
+C7,"cap_1uf_tdk","10000PF",20.12,22.98,0,top
+C10,"cap_1uf_tdk","1000PF",56.30,23.18,270,top
+C4,"cap_1uf_tdk","10000PF",3.87,22.98,0,top
+J3,"TERMINAL-BLOCK-3_5MM-2POS-PCB","unknown",3.65,28.17,270,top
+J2,"TERMINAL-BLOCK-3_5MM-2POS-PCB","unknown",3.65,35.17,270,top
+J1,"TERMINAL-BLOCK-3_5MM-2POS-PCB","unknown",3.65,42.17,270,top
+R1,"res-0.125w","1k",63.55,13.62,180,top
+R2,"res-0.125w","1k",63.60,16.22,180,top
+R11,"res-0.125w","1k",63.35,31.71,270,top
+R5,"res-0.125w","10K",56.28,31.32,270,top
+C5,"cap_1uf_tdk","1000PF",53.85,31.94,90,top
+U1,"feather_m0_wifi","unknown",58.68,25.69,0,top
+L2,"bead","1uH",66.25,42.15,270,top
+R6,"resistor_0.25W","560",58.73,28.73,270,top
+R7,"res-0.125w","100",37.57,48.15,0,top
+C6,"cap_1uf_tdk","1uF",12.85,25.32,180,top
+J6,"HEADER2_1","unknown",45.13,49.45,270,top
+J5,"HEADER2_1","unknown",26.73,49.23,0,top
+U3,"DIP8","unknown",29.06,38.66,0,top
+J7,"HEADER2_1","unknown",26.73,51.98,0,top
+R4,"res-0.125w","100K",36.12,30.98,270,top
+C3,"cap-panasonic-220uf","220uF",43.32,30.88,0,top
+L1,"IND-680UH-Murata","680uH",40.87,41.23,90,top
+C11,"cap_1uf_tdk","0.1uF",61.50,44.73,90,top

@@ -1,0 +1,30 @@
+{
+  "name": "downloadjs",
+  "main": "download.js",
+  "homepage": "https://github.com/rndme/download",
+  "description": "file downloading using client-side javascript",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "version": "1.4.7",
+  "_release": "1.4.7",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.4.7",
+    "commit": "9f050b68e7b886c4077a2fe784a513d31c5214cf"
+  },
+  "_source": "https://github.com/rndme/download.git",
+  "_target": "^1.4.7",
+  "_originalSource": "downloadjs",
+  "_direct": true
+}

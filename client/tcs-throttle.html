@@ -1,0 +1,386 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-slider/paper-slider.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="downloadjs-import.html">
+<link rel="import" href="d3-import.html">
+<link rel="import" href="lodash-import.html">
+<link rel="import" href="tcs-chart.html">
+
+
+<dom-module id="tcs-throttle">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+      }
+
+      *, *:before, *:after {
+        box-sizing: inherit;
+      }
+
+      paper-slider {
+        flex: 1 1 auto;
+        width: initial;
+      }
+
+      .row {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .field {
+        flex: 1 1 25%;
+        margin: 16px;
+      }
+    </style>
+
+    <iron-ajax
+      id=train
+      url="http://10.42.0.21"
+      content-type="application/json"
+      handle-as="json"
+      on-response="handleResponse"
+      debounce-duration="1000"
+      method="POST"
+    ></iron-ajax>
+
+    <iron-ajax
+      id=status
+      url="http://10.42.0.21/buffer/[[lastPacketId]]"
+      handle-as="arraybuffer"
+      on-response="handleStatusResponse"
+      method="GET"
+    ></iron-ajax>
+
+    <paper-slider
+      id=slider
+      min="-32768"
+      max="32767"
+      value="[[value]]"
+      on-value-changed="_onValueChanged"
+    ></paper-slider>
+
+    <paper-button
+      on-tap="_stop"
+    >
+      Stop
+    </paper-button>
+
+    <paper-toggle-button
+      id=cruise
+      checked=[[cruise]]
+      on-checked-changed="_cruiseChanged"
+    >
+      Cruise
+    </paper-toggle-button>
+
+    <div class=row>
+      <div class=field>
+        Speed Cmd
+      </div>
+      <div class=field>
+        [[speed_cmd]]
+      </div>
+    </div>
+
+    <div class=row>
+      <div class=field>
+        Speed
+      </div>
+      <div class=field>
+        [[speed]]
+      </div>
+    </div>
+
+    <div class=row>
+      <div class=field>
+        Throttle Cmd
+      </div>
+      <div class=field>
+        [[throttle_cmd]]
+      </div>
+    </div>
+
+    <div class=row>
+      <div class=field>
+        Throttle
+      </div>
+      <div class=field>
+        [[throttle]]
+      </div>
+    </div>
+
+    <paper-input
+      value=[[Kp]]
+      on-value-changed="_KpChanged"
+      label="Kp"
+    ></paper-input>
+
+    <paper-input
+      id=Ki
+      value=[[Ki]]
+      on-value-changed="_KiChanged"
+      label="Ki"
+    ></paper-input>
+
+    <paper-input
+      id=Kd
+      value=[[Kd]]
+      on-value-changed="_KdChanged"
+      label="Kd"
+    ></paper-input>
+
+    <paper-input
+      id=Ko
+      value=[[Ko]]
+      on-value-changed="_KoChanged"
+      label="Ko"
+    ></paper-input>
+
+    <paper-button on-tap="_handleDownload">
+      Download Log
+    </paper-button>
+
+    <tcs-chart></tcs-chart>
+
+  </template>
+
+  <script>
+    /**
+     * `tcs-throttle`
+     * Train Control System Throttle
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class TcsThrottle extends Polymer.Element {
+      static get is() { return 'tcs-throttle'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'tcs-throttle'
+          },
+
+          value: {
+            type: Number,
+            value: 0
+          },
+
+          cruise: {
+            type: Boolean,
+            value: false
+          },
+
+          Kp: {
+            type: Number,
+            value: 4
+          },
+
+          Ki: {
+            type: Number,
+            value: 0.01
+          },
+
+          Kd: {
+            type: Number,
+            value: 1.5
+          },
+
+          Ko: {
+            type: Number,
+            value: 0.01
+          },
+
+          lastPacketId: {
+            type: Number,
+            value: 0
+          },
+
+          packets: {
+            type: Array,
+            value: ()=>[]
+          },
+
+          speed: {
+            type: Number
+          },
+
+          speed_cmd: {
+            type: Number
+          },
+
+          throttle: {
+            type: Number
+          },
+
+          throttle_cmd: {
+            type: Number
+          },
+        };
+      }
+
+      static get observers() {
+        return [
+          // Observer method name, followed by a list of dependencies, in parenthesis
+          '_paramsChanged(value, cruise, Kp, Ki, Kd, Ko)'
+        ]
+      }
+
+      constructor() {
+        super();
+        let types = {
+          uint32_t: [4, DataView.prototype.getUint32],
+          // how big is that really
+          tcs_mode_t: [4, DataView.prototype.getUint32],
+          int32_t: [4,  DataView.prototype.getInt32],
+          int16_t: [2, DataView.prototype.getInt16],
+          float: [4, DataView.prototype.getFloat32],
+        };
+        this.struct =
+          `uint32_t tc3_ovf_count;
+            uint32_t current_tach;
+            uint32_t previous_tach;
+            int32_t speed;
+            int32_t previous_speed;
+            int32_t previous_error;
+            int32_t throttle_slew_rate;
+            int32_t speed_cmd;
+            int32_t throttle_cmd;
+            int32_t throttle;
+            int32_t previous_throttle;
+            int32_t vac;
+            int32_t vcc;
+            int32_t amps;
+            float Kp;
+            float Ki;
+            float Kd;
+            float Ko;
+            tcs_mode_t mode;`.split('\n').map(e=>e.trim().replace(';', '')
+              .split(' ')).map(e=>types[e[0]].concat([e[1]]))
+      }
+
+      unpack(buf) {
+        var dv = new DataView(buf);
+        let data = [];
+        let offset = 0;
+        let sizeof_struct = this.struct.map(e=>e[0]).reduce((a,b)=>a + b, 0);
+        for (let n = 0; n < dv.byteLength / sizeof_struct; ++n) {
+          let rec = {};
+          this.struct.forEach((e, i)=>{
+            let size, accessor, name;
+            [size, accessor, name] = e;
+            rec[name] = accessor.call(dv, offset, true);
+            offset += size;
+          })
+          data.push(rec);
+        }
+        return data;
+      }
+
+      callForever() {
+        this.$.status.generateRequest();
+        setTimeout(()=>this.callForever(), 1000);
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        setTimeout(()=>this.callForever(), 1000);
+      }
+
+      _send(cmd) {
+        this.$.train.body = cmd;
+        this.$.train.generateRequest();
+      }
+
+      _getCmd(value, cruise, Kp, Ki, Kd, Ko) {
+          return {
+            throttle_cmd: cruise ? 0 : value,
+            speed_cmd: cruise ? value : 0,
+            mode: cruise ? 1 : 0,
+            Ko: Ko,
+            Kp: Kp,
+            Ki: Ki,
+            Kd: Kd,
+          };
+      }
+
+      _paramsChanged(value, cruise, Kp, Ki, Kd, Ko) {
+        this._send(this._getCmd(value, cruise, Kp, Ki, Kd, Ko));
+      }
+
+      _onValueChanged(e) {
+        this.value = e.detail.value;
+      }
+
+      _cruiseChanged(e) {
+        this.cruise = e.detail.value;
+      }
+
+      _stop(e) {
+        this._send(this._getCmd(0, false, this.Kp, this.Ki, this.Kd, this.Ko))
+        this.value = 0;
+        this.cruise = false;
+      }
+
+      _KpChanged(e) {
+        this.Kp = e.detail.value;
+      }
+
+      _KiChanged(e) {
+        this.Ki = e.detail.value;
+      }
+
+      _KdChanged(e) {
+        this.Kd = e.detail.value;
+      }
+
+      _KoChanged(e) {
+        this.Ko = e.detail.value;
+      }
+
+      handleResponse(e) {
+        console.log(
+          e.detail.response.mode,
+          e.detail.response.throttle_cmd,
+          e.detail.response.speed_cmd,
+          e.detail.response.speed,
+          e.detail.response.Kp,
+          e.detail.response.Ki,
+          e.detail.response.Kd,
+          e.detail.response.Ko,
+        );
+      }
+
+      handleStatusResponse(e) {
+        let status = this.unpack(e.detail.response);
+        if (!status.length) {
+          this.lastPacketId = 0;
+          return;
+        }
+        let s = _.last(status);
+        console.log(s.speed_cmd, s.speed, s.throttle, s.current_tach, s.current_tach - s.previous_tach);
+        _.assign(this, s);
+        this.lastPacketId = s.tc3_ovf_count;
+        status.forEach(e=>this.packets.push(e))
+        if (this.packets.length > 10000) {
+          this.packets = this.packets.slice(-10000);
+        }
+      }
+
+      _handleDownload(e) {
+        let rows = [_.keys(this.packets[0]).join("\t")];
+        this.packets.forEach(p=>rows.push(_.values(p).join("\t")));
+        download(rows.join("\n"), "tcslog.csv", "text/plain");
+      }
+    }
+
+    window.customElements.define(TcsThrottle.is, TcsThrottle);
+  </script>
+</dom-module>

@@ -1,0 +1,24 @@
+{
+  "name": "tcs-throttle",
+  "description": "Train Control System Throttle",
+  "main": "tcs-throttle.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "paper-slider": "^2.0.4",
+    "iron-ajax": "^2.0.6",
+    "paper-toggle-button": "^2.0.0",
+    "paper-icon-button": "^2.0.1",
+    "paper-button": "^2.0.0",
+    "paper-input": "^2.0.5",
+    "d3": "^4.12.2",
+    "downloadjs": "^1.4.7"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}

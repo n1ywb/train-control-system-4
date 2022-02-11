@@ -1,0 +1,13 @@
+
+Element["" "" "F1" "" 130.00mil 70.00mil 170.00mil 40.00mil 0 100 ""]
+(
+	Pin[0.0000 135.00mil 111.00mil 20.00mil 117.00mil 65.00mil "" "1" "edge2"]
+	Pin[0.0000 0.0000 111.00mil 20.00mil 117.00mil 65.00mil "" "1" "edge2"]
+	Pin[390.00mil 0.0000 111.00mil 20.00mil 117.00mil 65.00mil "" "2" "edge2"]
+	Pin[390.00mil 135.00mil 111.00mil 20.00mil 117.00mil 65.00mil "" "2" "edge2"]
+	ElementLine [-120.00mil -65.00mil 510.00mil -65.00mil 10.00mil]
+	ElementLine [510.00mil -65.00mil 510.00mil 200.00mil 10.00mil]
+	ElementLine [510.00mil 200.00mil -120.00mil 200.00mil 10.00mil]
+	ElementLine [-120.00mil 200.00mil -120.00mil -65.00mil 10.00mil]
+
+	)

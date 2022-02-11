@@ -1,0 +1,17 @@
+
+Element["" "" "D1" "" 8.8385mm 102.96mil -0.7196mm -28.75mil 0 100 ""]
+(
+	Pin[234.53mil 1.75mil 2.9590mm 48.00mil 3.1114mm 65.00mil "2" "1" "edge2"]
+	Pin[-265.47mil 1.75mil 2.9590mm 48.00mil 3.1114mm 65.00mil "1" "2" "square,edge2"]
+	ElementLine [-195.23mil -99.96mil 169.77mil -99.96mil 6.00mil]
+	ElementLine [169.77mil -99.96mil 169.77mil 105.04mil 6.00mil]
+	ElementLine [169.77mil 105.04mil -195.23mil 105.04mil 6.00mil]
+	ElementLine [-195.23mil 105.04mil -195.23mil -99.96mil 6.00mil]
+	ElementLine [-195.23mil -99.96mil -110.23mil -99.96mil 6.00mil]
+	ElementLine [-110.23mil -99.96mil -110.23mil 105.04mil 6.00mil]
+	ElementLine [-265.47mil 1.75mil -186.40mil 1.75mil 6.00mil]
+	ElementLine [-186.40mil 1.75mil -185.97mil 2.18mil 6.00mil]
+	ElementLine [234.53mil 1.75mil 170.20mil 1.75mil 6.00mil]
+	ElementLine [170.20mil 1.75mil 169.77mil 2.18mil 6.00mil]
+
+	)

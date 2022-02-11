@@ -1,0 +1,14 @@
+
+Element["" "" "" "" 505.10mil 505.10mil 0.0000 0.0000 0 100 ""]
+(
+	Pin[-5.0000mm 0.0000 131.00mil 40.00mil 136.00mil 80.00mil "1" "1" "selected,square"]
+	Pin[5.0000mm 0.0000 131.00mil 40.00mil 136.00mil 80.00mil "" "2" ""]
+	ElementLine [-5.0000mm -3.5000mm -5.0000mm -4.0000mm 10.00mil]
+	ElementLine [-5.5000mm -3.5000mm -4.5000mm -3.5000mm 10.00mil]
+	ElementLine [-5.0000mm -4.0000mm -5.0000mm -3.0000mm 10.00mil]
+	ElementArc [0.0000 0.0000 500.00mil 500.00mil 0 90 10.00mil]
+	ElementArc [0.0000 0.0000 500.00mil 500.00mil 90 90 10.00mil]
+	ElementArc [0.0000 0.0000 500.00mil 500.00mil 180 90 10.00mil]
+	ElementArc [0.0000 0.0000 500.00mil 500.00mil 270 90 10.00mil]
+
+	)

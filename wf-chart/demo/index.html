@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>wf-chart demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../wf-chart.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic wf-chart demo</h3>
+      <demo-snippet>
+        <template>
+          <wf-chart
+            data='[
+              {
+                "timestamp": 0,
+                "min": -10,
+                "max": 10,
+                "mean": 5
+              },
+              {
+                "timestamp": 100,
+                "min": -5,
+                "max": 7,
+                "mean": 3
+              },
+              {
+                "timestamp": 200,
+                "min": -10,
+                "max": 20,
+                "mean": 15
+              }
+            ]'
+          ></wf-chart>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>

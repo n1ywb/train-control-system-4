@@ -1,0 +1,30 @@
+# PcbBOM Version 1.0
+# Date: Sun 28 Jan 2018 07:52:13 PM GMT UTC
+# Author: jeff
+# Title: (unknown) - PCB BOM
+# Quantity, Description, Value, RefDes
+# --------------------------------------------
+1,"0.1_inch_1pin","unknown",J8 
+1,"fuseholder_3568","4A",F1 
+2,"JUMPER4","unknown",J4 J9 
+7,"res-0.125w","1k",R9 R3 R8 R10 R1 R2 R11 
+1,"do-41","30V_500W",D1 
+1,"cap_alum_4700uf_snap","4700uF",C1 
+2,"cap-panasonic-220uf","220uF",C2 C3 
+2,"KBP306GTB-bridge-rect","unknown",U4 U5 
+1,"lmd18200","unknown",U2 
+1,"reflect-int-SFH-9206","unknown",U6 
+3,"cap_1uf_tdk","1uF",C9 C8 C6 
+2,"cap_1uf_tdk","10000PF",C7 C4 
+2,"cap_1uf_tdk","1000PF",C10 C5 
+3,"TERMINAL-BLOCK-3_5MM-2POS-PCB","unknown",J3 J2 J1 
+1,"res-0.125w","10K",R5 
+1,"feather_m0_wifi","unknown",U1 
+1,"bead","1uH",L2 
+1,"resistor_0.25W","560",R6 
+1,"res-0.125w","100",R7 
+3,"HEADER2_1","unknown",J6 J5 J7 
+1,"DIP8","unknown",U3 
+1,"res-0.125w","100K",R4 
+1,"IND-680UH-Murata","680uH",L1 
+1,"cap_1uf_tdk","0.1uF",C11 

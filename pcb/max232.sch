@@ -1,0 +1,70 @@
+v 20100214 2
+C 40000 40000 0 0 0 title-B.sym
+C 40400 47400 1 0 0 DB9-1.sym
+{
+T 41400 50300 5 10 0 0 0 0 1
+device=DB9
+T 40600 50600 5 10 1 1 0 0 1
+refdes=CONN?
+}
+C 50100 44400 1 0 0 max232-1.sym
+{
+T 50400 47450 5 10 0 0 0 0 1
+device=MAX232
+T 52400 47300 5 10 1 1 0 6 1
+refdes=U?
+T 50400 47650 5 10 0 0 0 0 1
+footprint=DIP16
+}
+C 48000 47300 1 0 0 capacitor-1.sym
+{
+T 48200 48000 5 10 0 0 0 0 1
+device=CAPACITOR
+T 48200 47800 5 10 1 1 0 0 1
+refdes=C?
+T 48200 48200 5 10 0 0 0 0 1
+symversion=0.1
+}
+C 47900 46700 1 0 0 capacitor-1.sym
+{
+T 48100 47400 5 10 0 0 0 0 1
+device=CAPACITOR
+T 48100 47200 5 10 1 1 0 0 1
+refdes=C?
+T 48100 47600 5 10 0 0 0 0 1
+symversion=0.1
+}
+C 47900 45900 1 0 0 capacitor-1.sym
+{
+T 48100 46600 5 10 0 0 0 0 1
+device=CAPACITOR
+T 48100 46400 5 10 1 1 0 0 1
+refdes=C?
+T 48100 46800 5 10 0 0 0 0 1
+symversion=0.1
+}
+C 47900 45100 1 0 0 capacitor-1.sym
+{
+T 48100 45800 5 10 0 0 0 0 1
+device=CAPACITOR
+T 48100 45600 5 10 1 1 0 0 1
+refdes=C?
+T 48100 46000 5 10 0 0 0 0 1
+symversion=0.1
+}
+C 47900 44300 1 0 0 capacitor-1.sym
+{
+T 48100 45000 5 10 0 0 0 0 1
+device=CAPACITOR
+T 48100 44800 5 10 1 1 0 0 1
+refdes=C?
+T 48100 45200 5 10 0 0 0 0 1
+symversion=0.1
+}
+C 55700 45400 1 0 0 header3-1.sym
+{
+T 56700 46050 5 10 0 0 0 0 1
+device=HEADER3
+T 56100 46700 5 10 1 1 0 0 1
+refdes=J?
+}

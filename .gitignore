@@ -1,0 +1,12 @@
+*.bak_
+*.bak_
+*.bak
+*~
+*-
+*.save
+*.bak0
+*.sch#
+*.backup
+*.pcb.bak*
+pcb.zip
+.~lock*

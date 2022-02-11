@@ -1,0 +1,11 @@
+
+Element["" "" "U1" "" 2.7967mm 60.11mil 50.00mil 10.00mil 0 100 ""]
+(
+	Pad[-75.00mil -25.00mil -25.00mil -25.00mil 50.00mil 20.00mil 60.00mil "1" "1" "square"]
+	Pad[-87.50mil 37.50mil -12.50mil 37.50mil 25.00mil 20.00mil 35.00mil "2" "2" "square"]
+	Pad[-75.00mil 100.00mil -25.00mil 100.00mil 50.00mil 20.00mil 60.00mil "3" "3" "square"]
+	Pad[175.00mil 100.00mil 225.00mil 100.00mil 50.00mil 20.00mil 60.00mil "4" "4" "square,edge2"]
+	Pad[162.50mil 37.50mil 237.50mil 37.50mil 25.00mil 20.00mil 35.00mil "5" "5" "square,edge2"]
+	Pad[175.00mil -25.00mil 225.00mil -25.00mil 50.00mil 20.00mil 60.00mil "6" "6" "square,edge2"]
+
+	)

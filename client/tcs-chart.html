@@ -1,0 +1,370 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="d3-import.html">
+<link rel="import" href="lodash-import.html">
+
+
+<dom-module id="tcs-chart">
+  <template>
+    <style>
+      :host {
+        /* pick horizontal or vertical */
+        @apply --layout-horizontal;
+        /*@apply --layout-vertical;*/
+
+        /* misc */
+        /*@apply --layout-wrap;*/
+        /*@apply --layout-inline;*/
+        /*@apply --layout-fit*/
+
+        /* alignment in cross axis */
+        /*@apply --layout-start;*/
+        /*@apply --layout-center;*/
+        /*@apply --layout-end;*/
+        /*@apply --layout-baseline;*/
+
+        /* alignment in main axis */
+        /*@apply --layout-start-justified;*/
+        /*@apply --layout-center-justified;*/
+        /*@apply --layout-end-justified;*/
+        /*@apply --layout-around-justified;*/
+        /*@apply --layout-justified;*/
+        /*@apply --layout-center-center; */
+
+        /* multi-line alignment in main axis */
+        /*@apply --layout-start-aligned;*/
+        /*@apply --layout-end-aligned*/
+        /*@apply --layout-center-aligned*/
+        /*@apply --layout-between-aligned*/
+        /*@apply --layout-around-aligned*/
+        box-sizing: border-box;
+      }
+
+      *, *:before, *:after {
+        box-sizing: inherit;
+      }
+
+      .axis {
+        fill: WhiteSmoke  ;
+      /*  opacity: 0.75; */
+      /*  font-weight:bold; */
+        /*background-color:black;  */
+      }
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: WhiteSmoke  ;
+        opacity: 1.0;
+        stroke-width: 1px;
+      /*  shape-rendering: crispEdges; */
+      }
+
+      .x.axis path {
+        display: none;
+      }
+
+      .line {
+        fill: none;
+        stroke: black;
+        stroke-width: 0.6px;
+      }
+
+      #background {
+        fill: darkblue;
+      }
+
+      .bar {
+        fill: yellow;
+        stroke: none;
+      /*  stroke: yellow;
+        stroke-width:0.2 */
+        shape-rendering: crispEdges;
+      /* opacity:0.4; */
+      }
+
+      .axis {
+        /*background-color:black;  */
+      }
+    </style>
+
+    <svg id="svg">
+      <defs id="defs">
+        <clipPath id="clip">
+          <rect id="clipRect"/>
+        </clipPath>
+      </defs>
+      <rect id="background" x="0" y="0"/>
+      <g id="zoomer">
+        <!-- Can these two g's be combined? Or eliminated?-->
+        <g id="clipG" clip-path="url(#clip)">
+          <path id="linePath" class="line"/>
+        </g>
+        <g id="xAxis" class="x axis"/>
+        <g id="yAxis" class="y axis"/>
+      </g>
+    </svg>
+
+  </template>
+
+  <script>
+    /**
+     * `tcs-throttle`
+     * Train Control System Throttle
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class TcsChart extends Polymer.Element {
+      static get is() { return 'tcs-chart'; }
+      static get properties() {
+        return {
+          data: {
+            type: Array,
+            value: function() {return []}
+          },
+
+          twin: {
+            type: Number
+          },
+
+          tbin: {
+            type: Number
+          },
+
+          marginTop: {
+            type: Number,
+            value: 16,
+            observer: 'marginTopChanged'
+          },
+
+          marginRight: {
+            type: Number,
+            value: 5,
+            observer: 'marginRightChanged'
+          },
+
+          marginBottom: {
+            type: Number,
+            value: 3,
+            observer: 'marginBottomChanged'
+          },
+
+          marginLeft: {
+            type: Number,
+            value: 50,
+            observer: 'marginLeftChanged'
+          },
+
+          width: {
+            type: Number,
+            value: 256,
+            observer: 'widthChanged'
+          },
+
+          height: {
+            type: Number,
+            value: 72,
+            observer: 'heightChanged'
+          },
+
+          clipWidth: {
+            type: Number,
+            computed: 'computeClipWidth(width, marginLeft, marginRight)',
+            observer: 'clipWidthChanged'
+          },
+
+          clipHeight: {
+            type: Number,
+            computed: 'computeClipHeight(height, marginTop, marginBottom)',
+            observer: 'clipHeightChanged'
+          },
+
+          xScale: {
+            type: Object,
+            computed: 'computeXScale(clipWidth)'
+          },
+
+          yScale: {
+            type: Object,
+            computed: 'computeYScale(clipHeight)'
+          },
+
+          xAxis: {
+            type: Object,
+            computed: 'computeXAxis(xScale, height)'
+          },
+
+          yAxis: {
+            type: Object,
+            computed: 'computeYAxis(yScale, width)'
+          },
+
+          line: {
+            type: Object,
+            computed: 'computeLine(xScale, yScale)'
+          },
+
+          zoom: {
+            type: Object,
+            computed: 'computeZoom(line, xAxis, yAxis)'
+          }
+
+        };
+      }
+
+      static get observers() {
+        return [
+          'marginLeftRightChanged(marginLeft, marginRight)',
+          'refresh(data, line, xScale, yScale, xAxis, yAxis, zoom)'
+        ]
+      }
+
+      constructor() {
+        super();
+      }
+
+      callForever() {
+        // setTimeout(()=>this.callForever(), 1000);
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        // setTimeout(()=>this.callForever(), 1000);
+        this.draw();
+      }
+
+
+      marginTopChanged(margin) {
+      }
+
+      marginRightChanged(margin) {
+      }
+
+      marginBottomChanged(margin) {
+      }
+
+      marginLeftChanged(margin) {
+      }
+
+      marginLeftRightChanged(left, right) {
+        if (_.contains(arguments, undefined)) return;
+        Polymer.dom(this.$.zoomer).setAttribute(
+          'transform', "translate(" + left + "," + right + ")");
+      }
+
+      widthChanged(width) {
+        Polymer.dom(this.$.svg).setAttribute('width', width);
+        Polymer.dom(this.$.background).setAttribute('width', width);
+      }
+
+      heightChanged(height) {
+        Polymer.dom(this.$.svg).setAttribute('height', height);
+        Polymer.dom(this.$.background).setAttribute('height', height);
+        Polymer.dom(this.$.xAxis).setAttribute(
+          'transform', "translate(0, " + height + ")");
+      }
+
+      clipWidthChanged(clipWidth) {
+        Polymer.dom(this.$.clipRect).setAttribute('width', clipWidth);
+      }
+
+      clipHeightChanged(clipHeight) {
+        Polymer.dom(this.$.clipRect).setAttribute('height', clipHeight);
+      }
+
+      computeClipWidth(width, marginLeft, marginRight) {
+        return width - marginLeft - marginRight;
+      }
+
+      computeClipHeight(height, marginTop, marginBottom) {
+        return height - marginTop - marginBottom;
+      }
+
+      computeXAxis(xScale, height) {
+        return d3.axisTop().scale(xScale)
+                  .tickSize(height)
+                  .tickFormat(this.d3_time_scaleFormat());
+      }
+
+      computeYAxis(yScale, width) {
+        return d3.axisLeft().scale(yScale)
+                  .tickSize(-width);
+      }
+
+      computeXScale(width) {
+        return d3.scaleUtc().range([0, width]);
+      }
+
+      computeYScale(height) {
+        return d3.scaleLinear().range([height, 0]);
+      }
+
+      computeLine(xScale, yScale) {
+        return d3.line()
+          .curve(d3.curveBasis)
+          .x(function (d) {
+            return xScale(d.timestamp);
+          })
+          .y(function (d) {
+            return yScale(d.mean);
+          })
+      }
+
+      redraw(data, line, xScale, yScale, xAxis, yAxis) {
+        Polymer.dom(this.$.linePath).setAttribute('d', line(data))
+        yAxis.tickValues(yScale.ticks(3));
+        d3.select('#xAxis').call(xAxis);
+        this.scopeSubtree(this.$.xAxis, false);
+        d3.select('#yAxis').call(yAxis);
+        this.scopeSubtree(this.$.yAxis, false);
+      }
+
+      refresh(data, line, xScale, yScale, xAxis, yAxis, zoom) {
+        // if (Array.prototype.includes.call(arguments, undefined)) return;
+        if (data.length) {
+          xScale.domain([data[0].timestamp, data[data.length-1].timestamp]);
+          yScale.domain([ d3.min(data, function(d) { return d.min; }),
+                          d3.max(data, function(d) { return d.max; }) ]);
+        }
+        // zoom.x(xScale);
+        this.redraw(data, line, xScale, yScale, xAxis, yAxis, zoom);
+      }
+
+      computeZoom(data, line, xAxis, yAxis, xScale, yScale) {
+        // return d3.zoom().on('zoom', function() {
+        //   this.redraw(data, line, xAxis, yAxis, xScale, yScale);
+        // });
+        return 1;
+      }
+
+      // svgSizeChanged(width, height, margin) {
+      // },
+
+      attached() {
+        // this.zoom(this.$.zoomer);
+        this.redraw(this.data, this.line, this.xScale,
+          this.yScale, this.xAxis, this.yAxis);
+      }
+
+      d3_time_scaleFormat() {
+        let formats = [
+            [d3.utcFormat("%Y"), function(d) { return true; }],
+            [d3.utcFormat("%B"), function(d) { return d.getUTCMonth(); }],
+            [d3.utcFormat("%b %d"), function(d) { return d.getUTCDate() != 1; }],
+            [d3.utcFormat("%a %d"), function(d) { return d.getUTCDay() && d.getUTCDate() != 1; }],
+            [d3.utcFormat("%H:%M"), function(d) { return d.getUTCHours(); }],
+            [d3.utcFormat("%H:%M"), function(d) { return d.getUTCMinutes(); }],
+            [d3.utcFormat(":%S"), function(d) { return d.getUTCSeconds(); }],
+            [d3.utcFormat(".%L"), function(d) { return d.getUTCMilliseconds(); }]
+        ];
+        return function(date) {
+          var i = formats.length - 1, f = formats[i];
+          while (!f[1](date)) f = formats[--i];
+          return f[0](date);
+        };
+      }
+    }
+
+    window.customElements.define(TcsChart.is, TcsChart);
+  </script>
+</dom-module>
